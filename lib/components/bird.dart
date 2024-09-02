@@ -24,14 +24,13 @@ class Bird extends SpriteGroupComponent<BirdMovement>
     final birdDownFlap = await gameRef.loadSprite(Assets.birdDownFlap);
 
     size = Vector2(50, 40);
-    current = BirdMovement.middle;
-    position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
     sprites = {
       BirdMovement.middle: birdMidFlap,
       BirdMovement.up: birdUpFlap,
       BirdMovement.down: birdDownFlap,
     };
-
+    current = BirdMovement.middle;
+    position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
     add(CircleHitbox());
   }
 
@@ -42,7 +41,7 @@ class Bird extends SpriteGroupComponent<BirdMovement>
       onComplete: () => current = BirdMovement.down,
     ));
     current = BirdMovement.up;
-    // FlameAudio.play(Assets.flying);
+    FlameAudio.play(Assets.flying);
   }
 
   @override
@@ -53,7 +52,7 @@ class Bird extends SpriteGroupComponent<BirdMovement>
   }
 
   void gameOver() {
-    // FlameAudio.play(Assets.collision);
+    FlameAudio.play(Assets.collision);
     gameRef.overlays.add(GameOverScreen.id);
     gameRef.pauseEngine();
     game.isHit = true;
@@ -68,7 +67,6 @@ class Bird extends SpriteGroupComponent<BirdMovement>
   void update(double dt) {
     super.update(dt);
     position.y += Config.birdVelocity * dt;
-
     if (position.y < 1) {
       gameOver();
     }
